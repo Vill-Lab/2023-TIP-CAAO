@@ -1,0 +1,56 @@
+model:
+  name: 'bfe'
+  pretrained: True
+  # load_weights: 'log/occludedduke(60.4%)/model.pth.tar-90'
+  # resume: 'log/brd_10/model.pth.tar-90'
+
+data:
+  type: 'image'
+  #sources: ['market1501']
+  #targets: ['market1501']
+  #targets: ['partialreid']
+  sources: ['occludedduke']
+  targets: ['occludedduke']
+  #sources: ['dukemtmcreid']
+  #targets: ['dukemtmcreid']
+  #sources: ['market1501']
+  #targets: ['occludedreid'] 
+  height: 384
+  width: 128
+  combineall: False
+  transforms: ['random_flip','color_jitter']
+  save_dir: 'log/brd_10_new/'
+  workers: 18
+#  norm_mean: [0.4300, 0.4236, 0.4393]  # mean and std of occludedduke
+#  norm_std: [0.1954, 0.1987, 0.1863]
+sampler:
+  train_sampler: 'RandomSampler'
+
+
+
+loss:
+  name: 'softmax'
+  softmax:
+    label_smooth: True
+
+
+train:
+  optim: adam
+  lr: 0.0002
+  max_epoch: 120
+  batch_size: 36 #45
+  fixbase_epoch: 5
+  open_layers: ['res_part1', 'res_part2', 'classifier1', 'classifier2', 'reduction1', 'reduction2', 'batch_erase','att1','att_module2']
+  lr_scheduler: 'multi_step'
+  # lr_scheduler: 'warmup'
+  stepsize: [20,40]
+  print_freq: 40   #20
+
+test:
+  batch_size: 100 # 100
+  dist_metric: 'euclidean'
+  normalize_feature: True
+  evaluate: False
+  eval_freq: 5 # -1
+  rerank: False
+  visactmap: False

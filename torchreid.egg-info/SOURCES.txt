@@ -1,0 +1,136 @@
+setup.py
+torchreid/__init__.py
+torchreid.egg-info/PKG-INFO
+torchreid.egg-info/SOURCES.txt
+torchreid.egg-info/dependency_links.txt
+torchreid.egg-info/requires.txt
+torchreid.egg-info/top_level.txt
+torchreid/data/__init__.py
+torchreid/data/datamanager.py
+torchreid/data/sampler.py
+torchreid/data/transforms copy.py
+torchreid/data/transforms.py
+torchreid/data/datasets/__init__.py
+torchreid/data/datasets/dataset.py
+torchreid/data/datasets/image/__init__.py
+torchreid/data/datasets/image/cuhk01.py
+torchreid/data/datasets/image/cuhk02.py
+torchreid/data/datasets/image/cuhk03.py
+torchreid/data/datasets/image/dukemtmcreid.py
+torchreid/data/datasets/image/grid.py
+torchreid/data/datasets/image/ilids.py
+torchreid/data/datasets/image/market1501.py
+torchreid/data/datasets/image/msmt17.py
+torchreid/data/datasets/image/occludedduke.py
+torchreid/data/datasets/image/occludedreid.py
+torchreid/data/datasets/image/partialilids.py
+torchreid/data/datasets/image/partialreid.py
+torchreid/data/datasets/image/pduke.py
+torchreid/data/datasets/image/prid.py
+torchreid/data/datasets/image/sensereid.py
+torchreid/data/datasets/image/viper.py
+torchreid/data/datasets/video/__init__.py
+torchreid/data/datasets/video/dukemtmcvidreid.py
+torchreid/data/datasets/video/ilidsvid.py
+torchreid/data/datasets/video/mars.py
+torchreid/data/datasets/video/prid2011.py
+torchreid/engine/__init__.py
+torchreid/engine/engine copy.py
+torchreid/engine/engine.py
+torchreid/engine/image/__init__.py
+torchreid/engine/image/softmax copy 2.py
+torchreid/engine/image/softmax copy.py
+torchreid/engine/image/softmax moving average.py
+torchreid/engine/image/softmax 共同训练.py
+torchreid/engine/image/softmax.py
+torchreid/engine/image/softmax418.py
+torchreid/engine/image/softmax5-05.py
+torchreid/engine/image/softmax_Adocc.py
+torchreid/engine/image/sota softmax.py
+torchreid/engine/image/triplet.py
+torchreid/engine/video/__init__.py
+torchreid/engine/video/softmax.py
+torchreid/engine/video/triplet.py
+torchreid/losses/__init__.py
+torchreid/losses/cross_entropy_loss.py
+torchreid/losses/cross_entropy_loss_copy.py
+torchreid/losses/cross_entropy_loss_negative.py
+torchreid/losses/hard_mine_triplet_loss.py
+torchreid/losses/hct_loss.py
+torchreid/metrics/__init__.py
+torchreid/metrics/accuracy.py
+torchreid/metrics/distance copy.py
+torchreid/metrics/distance.py
+torchreid/metrics/rank.py
+torchreid/metrics/rank_cylib/__init__.py
+torchreid/metrics/rank_cylib/rank_cy.c
+torchreid/metrics/rank_cylib/setup.py
+torchreid/metrics/rank_cylib/test_cython.py
+torchreid/models/GD.py
+torchreid/models/__init__.py
+torchreid/models/batch.py
+torchreid/models/bfe copy.py
+torchreid/models/bfe moving average.py
+torchreid/models/bfe.py
+torchreid/models/bfe430.py
+torchreid/models/bfe5-05.py
+torchreid/models/bfe_1222.py
+torchreid/models/bfe_125.py
+torchreid/models/bfe_4-04.py
+torchreid/models/bfe_407.py
+torchreid/models/bfe_412.py
+torchreid/models/bfe_418.py
+torchreid/models/bfe_new.py
+torchreid/models/bfe_ori.py
+torchreid/models/bfe_resnest.py
+torchreid/models/bfe_v2.py
+torchreid/models/bfenew.py
+torchreid/models/decoder.py
+torchreid/models/densenet.py
+torchreid/models/hacnn.py
+torchreid/models/hpm.py
+torchreid/models/inceptionresnetv2.py
+torchreid/models/inceptionv4.py
+torchreid/models/mlfn.py
+torchreid/models/mobilenetv2.py
+torchreid/models/mudeep.py
+torchreid/models/mycnn.py
+torchreid/models/nasnet.py
+torchreid/models/opts.py
+torchreid/models/osnet.py
+torchreid/models/osnet_ain.py
+torchreid/models/pcb copy 2.py
+torchreid/models/pcb copy 3.py
+torchreid/models/pcb copy.py
+torchreid/models/pcb(share_conv_92.3%).py
+torchreid/models/pcb(share_conv_92.3%2525).py
+torchreid/models/pcb.py
+torchreid/models/pcb_att.py
+torchreid/models/pcb_inde_conv_92%.py
+torchreid/models/pcb_inde_conv_92%2525.py
+torchreid/models/resnest.py
+torchreid/models/resnet.py
+torchreid/models/resnet_ibn_a.py
+torchreid/models/resnet_ibn_b.py
+torchreid/models/resnet_ori.py
+torchreid/models/resnet_tmm.py
+torchreid/models/resnetmid.py
+torchreid/models/senet.py
+torchreid/models/shufflenet.py
+torchreid/models/shufflenetv2.py
+torchreid/models/spectral.py
+torchreid/models/squeezenet.py
+torchreid/models/xception.py
+torchreid/optim/__init__.py
+torchreid/optim/lr_scheduler.py
+torchreid/optim/optimizer.py
+torchreid/optim/radam.py
+torchreid/optim/warm_up.py
+torchreid/utils/__init__.py
+torchreid/utils/avgmeter.py
+torchreid/utils/loggers.py
+torchreid/utils/model_complexity.py
+torchreid/utils/reidtools.py
+torchreid/utils/rerank.py
+torchreid/utils/tools.py
+torchreid/utils/torchtools.py

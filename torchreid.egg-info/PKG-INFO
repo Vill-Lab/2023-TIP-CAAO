@@ -1,0 +1,8 @@
+Metadata-Version: 2.1
+Name: torchreid
+Version: 1.0.6
+Summary: A library for deep learning person re-identification in PyTorch
+Home-page: https://github.com/KaiyangZhou/deep-person-reid
+Author: Kaiyang Zhou
+License: MIT
+Keywords: Person Re-Identification,Deep Learning,Computer Vision

@@ -1,0 +1,58 @@
+model:
+  name: 'bfe'
+  pretrained: True
+  # load_weights: '/home/v-zefanqu/v-zefanqu/CAAO/Paritalreid/log/Ad-occluded/Noocclusion_pduke.tar-60'
+  #resume: 'best_model/model.pth.tar-60'
+
+data:
+  type: 'image'
+  # sources: ['market1501']
+  # targets: ['market1501']
+  # sources: ['dukemtmcreid']
+  # targets: ['dukemtmcreid']
+  # targets: ['partialreid']
+  #sources: ['occludedduke']
+  # sources: ['pduke']
+  # targets: ['pduke']
+  sources: ['occludedduke']
+  targets: ['occludedduke']
+  # sources: ['occludedreid']
+  # targets: ['occludedreid'] 
+  height: 384
+  width: 128
+  combineall: False
+  transforms: ['random_flip']
+  save_dir: 'log/Ad-occluded/'
+  workers: 12
+#  norm_mean: [0.4300, 0.4236, 0.4393]  # mean and std of occludedduke
+#  norm_std: [0.1954, 0.1987, 0.1863]
+sampler:
+  train_sampler: 'RandomSampler'
+
+
+
+loss:
+  name: 'softmax'
+  softmax:
+    label_smooth: True
+
+
+train:
+  optim: adam
+  lr: 0.0003
+  max_epoch: 120
+  batch_size: 50 #45
+  # fixbase_epoch: 5
+  # open_layers:  ['harm1','harm2','res_part1','res_part2','res_part3','classifier1','classifier2','classifier4','reduction1','reduction2','reduction3','batch_erase','att_module2','att1','att_module3','att2','MultiHeads_1','attent_swap']
+  lr_scheduler: 'multi_step'
+  # lr_scheduler: 'warmup'
+  print_freq: 40   #20
+
+test:
+  batch_size: 100 # 100
+  dist_metric: 'euclidean'
+  normalize_feature: True
+  evaluate: False
+  eval_freq: 5 # -1
+  rerank: False
+  visactmap: False

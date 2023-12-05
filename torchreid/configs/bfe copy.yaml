@@ -1,0 +1,49 @@
+model:
+  name: 'bfe'
+  pretrained: True
+  load_weights: ''
+  resume: ''
+
+data:
+  type: 'image'
+  # sources: ['market1501']
+  # targets: ['market1501','partialreid','partialilids']
+  sources: ['occludedduke']
+  targets: ['occludedduke']
+  height: 384
+  width: 128
+  combineall: False
+  transforms: ['random_flip']
+  save_dir: 'log/occludedduke/'
+
+sampler:
+  train_sampler: 'RandomIdentitySampler'
+
+loss:
+  name: 'triplet'
+  softmax:
+    label_smooth: True
+  triplet:
+    margin: 0.1 # distance margin
+    weight_t: 0.0 # weight to balance hard triplet loss
+    weight_x: 1.0 # weight to balance cross entropy loss
+
+train:
+  optim: 'adam'
+  lr: 0.0003
+  max_epoch: 120
+  batch_size: 32
+  fixbase_epoch: 5
+  # open_layers: ['res_part1','res_part2','classifier1','classifier2','reduction1','reduction2','att_module2','att_module1','batch_drop']
+  open_layers: ['res_part1','res_part2','classifier1','classifier2','classifier3','reduction1','reduction2','att_module2','batch_drop']
+  lr_scheduler: 'multi_step'
+  stepsize: [20,40,60]
+
+test:
+  batch_size: 100
+  dist_metric: 'euclidean'
+  normalize_feature: False
+  evaluate: False
+  eval_freq: -1
+  rerank: False
+  visactmap: False
