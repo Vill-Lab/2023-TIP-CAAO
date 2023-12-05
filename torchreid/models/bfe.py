@@ -154,17 +154,6 @@ class HarmAttn(nn.Module):
         y_soft_attn = self.soft_attn(x)
         return y_soft_attn
 
-class FC(nn.Module):
-    def __init__(self, inplanes, outplanes):
-        super(FC, self).__init__()
-        self.fc = nn.Linear(inplanes, outplanes)
-        self.bn = nn.BatchNorm1d(outplanes)
-        self.act = nn.PReLU()
-
-    def forward(self, x):
-        x = self.fc(x)
-        return self.act(x)
-
 import cv2
 import random
 class ResNet(nn.Module):
@@ -195,6 +184,10 @@ class ResNet(nn.Module):
         self.layer42 = nn.Sequential(copy.deepcopy(layer4))
         self.layer43 = nn.Sequential(copy.deepcopy(layer4))
         self.layer44 = nn.Sequential(copy.deepcopy(layer4))
+        # self.layer_ori = nn.Sequential(copy.deepcopy(layer4))
+
+        
+
 
         self.res_part1 = Bottleneck(2048, 512)
         self.res_part2 = Bottleneck(2048, 512)
@@ -222,6 +215,9 @@ class ResNet(nn.Module):
         self.reduction3.apply(weights_init_kaiming)
 
         self.global_maxpool = nn.AdaptiveMaxPool2d((1, 1))
+        # self.global_newpool = nn.AdaptiveMaxPool2d((1, 1))
+
+        # self.dropout = nn.Dropout(p=0.75)
 
         self.harm1=HarmAttn(512)
         self.harm2=HarmAttn(1024)
@@ -243,7 +239,8 @@ class ResNet(nn.Module):
         if self.classifier4.bias is not None:
             nn.init.constant_(self.classifier4.bias, 0)
 
-        self.numid=0        
+        self.numid=0
+       
         
     def featuremaps_my(self, x, x_2, x_3):
         if self.training:
@@ -314,38 +311,72 @@ class ResNet(nn.Module):
                 features = self.featuremaps(x)
                 return features.detach()
 
-            f1, f2, f3 = self.featuremaps_my(x, x_2, x_3)
+            if state == 'train':
+                f1, f2, f3 = self.featuremaps_my_train(x)
 
-            f1 = self.res_part1(f1)
-            f2 = self.res_part2(f2)
-            f3 = self.res_part3(f3)
+                f1 = self.res_part1(f1)
+                f2 = self.res_part2(f2)
+                f3 = self.res_part3(f3)
+                
+                v1 = self.global_maxpool(f1)
+                v1 = v1.view(v1.size(0), -1)
+                v1_1 = self.reduction1(v1)  # 512
 
-            v1 = self.global_maxpool(f1)
-            v1 = v1.view(v1.size(0), -1)
-            v1_1 = self.reduction1(v1)  # 512
+                v2 = self.global_maxpool(f2)
+                v2 = v2.view(v2.size(0), -1)
+                v2_1 = self.reduction2(v2)
 
-            v2 = self.global_maxpool(f2)
-            v2 = v2.view(v2.size(0), -1)
-            v2_1 = self.reduction2(v2)
+                v3 = self.global_maxpool(f3)
+                v3 = v3.view(v3.size(0), -1)
+                v3_1 = self.reduction3(v3)  # 512
 
-            v3 = self.global_maxpool(f3)
-            v3 = v3.view(v3.size(0), -1)
-            v3_1 = self.reduction3(v3)  # 512
-            
-            v4_1 = torch.cat([v1_1, v2_1, v3_1], dim = 1)
 
-            y1 = self.classifier1(v1_1)
-            y2 = self.classifier2(v2_1)
-            y3 = self.classifier3(v3_1)
-            y4 = self.classifier4(v4_1)
+                y1 = self.classifier1(v1_1)
+                y2 = self.classifier2(v2_1)
+                y3 = self.classifier3(v3_1)
+                # y4 = self.classifier2(v4_1)
 
-            if self.loss == 'softmax':
-                return y1, y2, y3, y4
-            # return y1, y2, y3, y4, mask_1
-            elif self.loss == 'triplet':
-                return y1, y2, y3, y4
+                if self.loss == 'softmax':
+                    return y1.detach(), y2.detach(), y3.detach()
+                # return y1, y2, y3, y4, mask_1
+                elif self.loss == 'triplet':
+                    return y1, y2
+                else:
+                    raise KeyError("Unsupported loss: {}".format(self.loss))
+
             else:
-                raise KeyError("Unsupported loss: {}".format(self.loss))
+                f1, f2, f3 = self.featuremaps_my(x, x_2, x_3)
+
+                f1 = self.res_part1(f1)
+                f2 = self.res_part2(f2)
+                f3 = self.res_part3(f3)
+
+                v1 = self.global_maxpool(f1)
+                v1 = v1.view(v1.size(0), -1)
+                v1_1 = self.reduction1(v1)  # 512
+
+                v2 = self.global_maxpool(f2)
+                v2 = v2.view(v2.size(0), -1)
+                v2_1 = self.reduction2(v2)
+
+                v3 = self.global_maxpool(f3)
+                v3 = v3.view(v3.size(0), -1)
+                v3_1 = self.reduction3(v3)  # 512
+                
+                v4_1 = torch.cat([v1_1, v2_1, v3_1], dim = 1)
+
+                y1 = self.classifier1(v1_1)
+                y2 = self.classifier2(v2_1)
+                y3 = self.classifier3(v3_1)
+                y4 = self.classifier4(v4_1)
+
+                if self.loss == 'softmax':
+                    return y1, y2, y3, y4
+                # return y1, y2, y3, y4, mask_1
+                elif self.loss == 'triplet':
+                    return y1, y2, y3, y4
+                else:
+                    raise KeyError("Unsupported loss: {}".format(self.loss))
 
         if not self.training:
             if return_featuremaps:
